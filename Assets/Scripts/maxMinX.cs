@@ -16,10 +16,10 @@ public class maxMinX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y > 22)
-            transform.position = new Vector3(x, 22f, z);
-        else if (transform.position.y < 16)
-            transform.position = new Vector3(x, 16f, z);
+        if (transform.position.y > 23f)
+            transform.position = new Vector3(x, 23f, z);
+        else if (transform.position.y < 19f)
+            transform.position = new Vector3(x, 19f, z);
         else
             transform.position = new Vector3(x, transform.position.y, z);
     }

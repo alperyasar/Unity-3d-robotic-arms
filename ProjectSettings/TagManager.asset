@@ -8,6 +8,8 @@ TagManager:
   - upperArm2
   - upperArm3
   - upperArm4
+  - box
+  - ball
   layers:
   - Default
   - TransparentFX
