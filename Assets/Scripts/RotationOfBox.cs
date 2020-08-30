@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using System.Globalization;
+using UnityScript.Steps;
 
 public class RotationOfBox : MonoBehaviour
 {
@@ -15,6 +17,19 @@ public class RotationOfBox : MonoBehaviour
     float tempX, tempZ, tempY ,speed;
     Vector3 position1, position2, position3, position4;
     Vector3 ball, box;
+
+    public Texture texture;
+    GUIContent content1 = new GUIContent();
+    GUIContent content2 = new GUIContent();
+
+    string label = "1", label2 = "2";
+    Rect checkBoxRect, checkBoxRect2;
+    Rect labelRect, labelRect2;
+    bool allOptions = false;
+    GUIStyle labelStyle, labelStyle2,style;
+
+    public Camera top;
+    public Camera side;
     void Start()
     {
         position1 = GameObject.FindGameObjectWithTag("upperArm1").transform.position;
@@ -24,6 +39,8 @@ public class RotationOfBox : MonoBehaviour
         xAxis = tempX = ball.x;
         tempY = ball.y;
         zAxis = tempZ = ball.z;
+        top.enabled = true;
+        side.enabled = false;
     }
 
     // Update is called once per frame
@@ -37,7 +54,17 @@ public class RotationOfBox : MonoBehaviour
         ball = GameObject.FindGameObjectWithTag("ball").transform.position;
         box = GameObject.FindGameObjectWithTag("box").transform.position;
 
+        if (allOptions)
+        {
+            content1.image = texture;
+            content2.image = null;
+        }
 
+        else
+        {
+            content2.image = texture;
+            content1.image = null;
+        }
         if (purpose == 1)
         {
             if (box.y > 21.5f || ball.y - box.y > 3.2f)
@@ -78,6 +105,8 @@ public class RotationOfBox : MonoBehaviour
             tempY = ball.y;
             tempZ = ball.y;
         }
+        
+            
     }
     void jumpUp()
     {
@@ -311,7 +340,7 @@ public class RotationOfBox : MonoBehaviour
     {
         speed = (ball.z - tempZ) / Time.deltaTime;
         Debug.Log(speed);
-        if (ball.z > zAxis && speed > -0.8)
+        if (ball.z > zAxis && speed < -0.8)
         {
             transform.localRotation = Quaternion.Euler(-85, 180, 0);
             GameObject.FindGameObjectWithTag("upperArm1").transform.position = new Vector3(position1.x, 17.37371f, position1.z);
@@ -324,5 +353,73 @@ public class RotationOfBox : MonoBehaviour
         else
             rotateOldPurpose();
         
+    }
+    void Awake()
+    {
+        labelStyle = new GUIStyle();
+        labelStyle.fontSize = 16;
+        labelStyle.normal.textColor = Color.white;
+        labelStyle.fontStyle = FontStyle.Bold;
+        checkBoxRect = new Rect(8, 8, 16, 16);
+        labelRect = new Rect(34, 8, 64, 16);
+        
+        labelStyle2 = new GUIStyle();
+        labelStyle2.fontSize = 16;
+        labelStyle2.normal.textColor = Color.white;
+        labelStyle2.fontStyle = FontStyle.Bold;
+        checkBoxRect2 = new Rect(8, 32, 16, 16);
+        labelRect2 = new Rect(34, 32, 128, 32);
+
+        style = new GUIStyle();
+        style.fontSize = 16;
+        style.normal.textColor = Color.white;
+        style.fontStyle = FontStyle.Bold;
+    }
+    void OnGUI()
+    {
+        
+        
+        GUI.Label(labelRect, label, labelStyle);
+        GUI.Label(labelRect2, label2, labelStyle2);
+        GUI.Label(new Rect(8, 125, 200, 200), "Ball Current Position", style);
+        GUI.Label(new Rect(8, 145, 100, 400), "X : " + ball.x.ToString(), style);
+        GUI.Label(new Rect(8, 165, 100, 400), "Z : " + ball.z.ToString(), style);
+
+        if (GUI.Button(checkBoxRect, content1.image))
+        {
+            allOptions = true;
+            purpose = 1;
+            top.enabled = false;
+            side.enabled = true;
+        }
+            
+        if (GUI.Button(checkBoxRect2, content2.image))
+        {
+            allOptions = false;
+            purpose = 2;
+            top.enabled = true;
+            side.enabled = false;
+        }
+        
+
+    }
+    public void Text_ChangedZ(String newText) 
+    {
+        if (!(newText.Equals("-")))
+        {
+            float temp = float.Parse(newText);
+            zAxis = temp;
+        }
+            
+
+    }
+    public void Text_ChangedX(String newText)
+    {
+        if (!(newText.Equals("-")))
+        {
+            float temp = float.Parse(newText);
+            xAxis = temp;
+        }
+
     }
 }
