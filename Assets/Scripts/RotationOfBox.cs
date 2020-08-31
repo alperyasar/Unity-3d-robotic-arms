@@ -75,9 +75,6 @@ public class RotationOfBox : MonoBehaviour
                 jumpUp();
             else if (upDown == 2)
                 jumpDown();
-
-
-
         }
         
         else if (purpose == 2)
@@ -376,9 +373,7 @@ public class RotationOfBox : MonoBehaviour
         style.fontStyle = FontStyle.Bold;
     }
     void OnGUI()
-    {
-        
-        
+    {  
         GUI.Label(labelRect, label, labelStyle);
         GUI.Label(labelRect2, label2, labelStyle2);
         GUI.Label(new Rect(8, 125, 200, 200), "Ball Current Position", style);
@@ -400,8 +395,6 @@ public class RotationOfBox : MonoBehaviour
             top.enabled = true;
             side.enabled = false;
         }
-        
-
     }
     public void Text_ChangedZ(String newText) 
     {
